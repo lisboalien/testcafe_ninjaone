@@ -10,6 +10,9 @@ class DeviceCard {
     this.saveButton = Selector(".submitButton");
   }
 
+  /**
+   * Check if the page is opened
+   * */
   async pageOpened() {
     const getLocation = ClientFunction(() => document.location.href);
     await t
@@ -19,6 +22,10 @@ class DeviceCard {
       .contains("NEW DEVICE");
   }
 
+  /**
+   * Add a new device
+   * @param {Object} newDevice - New device details
+   * */
   async addDevice(newDevice) {
     await t
       .typeText(this.systemName, newDevice.system_name)
