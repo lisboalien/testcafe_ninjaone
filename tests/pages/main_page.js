@@ -20,10 +20,20 @@ class MainPage {
     this.deviceList = Selector(".device-main-box");
   }
 
+  /**
+   * Create a new device card
+   * @param {String} deviceName - Device name
+   */
   async newDeviceCard(deviceName) {
     return new DeviceCard(deviceName);
   }
 
+  /**
+   * Verify if the device is on the devices list
+   * @param {String} deviceName Device name
+   * @param {String} deviceType Device type [MAC, WINDOWS SERVER, WINDOWS WORKSTATION]
+   * @param {String} deviceCapacity Device capacity (GB)
+   */
   async verifyDeviceCard(deviceName, deviceType, deviceCapacity) {
     const device = await this.newDeviceCard(deviceName);
     await t
