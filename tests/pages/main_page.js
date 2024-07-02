@@ -1,8 +1,12 @@
 import { Selector, t } from "testcafe";
 
 class DeviceCard {
-  constructor(deviceName) {
-    this.deviceCard = Selector(`.device-main-box`).withText(deviceName);
+  constructor(identifier) {
+    this.baseSelector = Selector(`.device-main-box`);
+    this.deviceCard =
+      typeof identifier === "number"
+        ? this.baseSelector.nth(identifier)
+        : this.baseSelector.withText(identifier);
     this.deviceCardName = this.deviceCard.find(`.device-name`);
     this.deviceCardType = this.deviceCard.find(`.device-type`);
     this.deviceCardCapacity = this.deviceCard.find(`.device-capacity`);
@@ -29,24 +33,110 @@ class MainPage {
   }
 
   /**
-   * Verify if the device is on the devices list
+   *
+   * @param {String} deviceName Device name
+   * @param {String} deviceType Device type [MAC, WINDOWS SERVER, WINDOWS WORKSTATION]
+   * @param {String} deviceCapacity (GB)
+   * @param {Numver} nth Position of the card you want to verify, if null, it will verify the device name
+   * @param {Boolean} contains To verify if the card contains the details or not
+   */
+  async verifyDeviceCard(
+    deviceName,
+    deviceType,
+    deviceCapacity,
+    nth = null,
+    contains = true
+  ) {
+    const deviceCard = await this.newDeviceCard(
+      nth === null ? deviceName : nth
+    );
+    try {
+      if (contains) {
+        await this.verifyDeviceDetails(
+          deviceCard,
+          deviceName,
+          deviceType,
+          deviceCapacity
+        );
+        await this.verifyDeviceActions(deviceCard);
+      } else {
+        await this.verifyDeviceDetailsNotContains(
+          deviceCard,
+          deviceName,
+          deviceType,
+          deviceCapacity
+        );
+      }
+    } catch (error) {
+      throw new Error(`Error verifying device card: ${error}`);
+    }
+  }
+
+  /**
+   * Verify if the device card contains the correct details
+   * @param {Selector} deviceCard The card you are verifying
    * @param {String} deviceName Device name
    * @param {String} deviceType Device type [MAC, WINDOWS SERVER, WINDOWS WORKSTATION]
    * @param {String} deviceCapacity Device capacity (GB)
    */
-  async verifyDeviceCard(deviceName, deviceType, deviceCapacity) {
+  async verifyDeviceDetails(
+    deviceCard,
+    deviceName,
+    deviceType,
+    deviceCapacity
+  ) {
+    await t
+      .expect(deviceCard.deviceCardName.innerText)
+      .contains(deviceName, "Device name does not match.")
+      .expect(deviceCard.deviceCardType.innerText)
+      .contains(deviceType, "Device type does not match.")
+      .expect(deviceCard.deviceCardCapacity.innerText)
+      .contains(deviceCapacity, "Device capacity does not match.");
+  }
+
+  /**
+   * Verify if the device card contains the correct actions
+   * @param {Selector} deviceCard The card you are verifying
+   */
+  async verifyDeviceActions(deviceCard) {
+    await t
+      .expect(deviceCard.deviceCardEdit.exists)
+      .ok("Edit button does not exist.")
+      .expect(deviceCard.deviceCardRemove.exists)
+      .ok("Remove button does not exist.");
+  }
+
+  /**
+   * Verify if the device card does not contain the details
+   * @param {Selector} deviceCard The card you are verifying
+   * @param {String} deviceName Device name
+   * @param {String} deviceType Device type [MAC, WINDOWS SERVER, WINDOWS WORKSTATION]
+   * @param {String} deviceCapacity Device capacity (GB)
+   */
+  async verifyDeviceDetailsNotContains(
+    deviceCard,
+    deviceName,
+    deviceType,
+    deviceCapacity
+  ) {
+    await t
+      .expect(deviceCard.deviceCardName.innerText)
+      .notContains(deviceName, "Device name should not match.")
+      .expect(deviceCard.deviceCardType.innerText)
+      .notContains(deviceType, "Device type should not match.")
+      .expect(deviceCard.deviceCardCapacity.innerText)
+      .notContains(deviceCapacity, "Device capacity should not match.");
+  }
+
+  /**
+   * Verify if there is no device card with the given name
+   * @param {String} deviceName Device name
+   */
+  async verifyRemovedDevice(deviceName) {
     const device = await this.newDeviceCard(deviceName);
     await t
-      .expect(device.deviceCardName.innerText)
-      .contains(deviceName)
-      .expect(device.deviceCardType.innerText)
-      .contains(deviceType)
-      .expect(device.deviceCardCapacity.innerText)
-      .contains(deviceCapacity)
-      .expect(device.deviceCardEdit.exists)
-      .ok()
-      .expect(device.deviceCardRemove.exists)
-      .ok();
+      .expect(device.deviceCard.exists)
+      .notOk("Device card should not exist.");
   }
 }
 

@@ -17,9 +17,9 @@ class DeviceCard {
     const getLocation = ClientFunction(() => document.location.href);
     await t
       .expect(getLocation())
-      .contains("/devices/add")
+      .contains("/devices/add", "Page is not correct")
       .expect(this.title.innerText)
-      .contains("NEW DEVICE");
+      .contains("NEW DEVICE", "Page is not opened");
   }
 
   /**
