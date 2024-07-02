@@ -1,0 +1,13 @@
+{
+  "baseURL": "http://localhost:3001/",
+  "src": "./tests/",
+  "browsers": ["chrome", "firefox"],
+  "baseUrl": "https://my-website.com",
+  "skipJsErrors": true,
+  "hostname": "localhost",
+  "screenshots": {
+    "takeOnFails": true,
+    "fullPage": true,
+    "path": "./reports/screenshots/"
+  }
+}
