@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "test": "testcafe all tests/*.js",
+    "test:chrome": "testcafe chrome tests/",
+    "test:firefox": "testcafe firefox tests/",
+    "test:safari": "testcafe safari tests/"
+  },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "testcafe": "^3.6.1"
