@@ -16,6 +16,7 @@ test(`Checking Devices List`, async (t) => {
   });
 });
 
+// BUG When creating a Windows Server device, the card shows the "WINDOWS_SERVER" with an underscore instead of a space
 ["MAC", "WINDOWS SERVER", "WINDOWS WORKSTATION"].forEach((type) => {
   test(`Create a new device - '${type}'`, async (t) => {
     const newDevice = generateDevice(null, type, null);
