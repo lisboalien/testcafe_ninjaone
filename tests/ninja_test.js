@@ -63,6 +63,12 @@ test(`${getTestCounter()} - Rename Device using API`, async (t) => {
   // Update device name
   await apiRequests.updateDeviceAPI(firstDevice.id, renamedDevice);
 
+  // Verify device update in the API
+  const updatedDevice = await apiRequests.getDeviceAPI(firstDevice.id);
+  await t
+    .expect(updatedDevice.system_name)
+    .eql(renamedDevice.system_name, "Device name is not updated");
+
   // Reload to reflect changes
   await t.eval(() => location.reload());
 
