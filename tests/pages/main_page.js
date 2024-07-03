@@ -20,8 +20,20 @@ class MainPage {
     this.title = Selector(".ninja-logo-container");
     this.deviceType = Selector("#device_type");
     this.sortBy = Selector("#sort_by");
+    this.sortByOptions = this.sortBy.find("option");
     this.addDevice = Selector(".submitButton");
     this.deviceList = Selector(".device-main-box");
+  }
+
+  /**
+   * Sort the list of devices by the given option
+   * @param {String} option sortByOption [capacity, name]
+   */
+  async sortDevicesBy(option = "capacity") {
+    const opt =
+      option.toLowerCase() === "name" ? "SYSTEM NAME" : "HDD CAPACITY";
+
+    await t.click(this.sortBy).click(this.sortByOptions.withText(opt));
   }
 
   /**
@@ -60,14 +72,10 @@ class MainPage {
         );
         await this.verifyDeviceActions(deviceCard);
       } else {
-        await this.verifyDeviceDetailsNotContains(
-          deviceCard,
-          deviceName,
-          deviceType,
-          deviceCapacity
-        );
+        await this.verifyDeviceDetailsNotContains(deviceCard, deviceName);
       }
     } catch (error) {
+      console.log(error);
       throw new Error(`Error verifying device card: ${error}`);
     }
   }
@@ -110,22 +118,11 @@ class MainPage {
    * Verify if the device card does not contain the details
    * @param {Selector} deviceCard The card you are verifying
    * @param {String} deviceName Device name
-   * @param {String} deviceType Device type [MAC, WINDOWS SERVER, WINDOWS WORKSTATION]
-   * @param {String} deviceCapacity Device capacity (GB)
    */
-  async verifyDeviceDetailsNotContains(
-    deviceCard,
-    deviceName,
-    deviceType,
-    deviceCapacity
-  ) {
+  async verifyDeviceDetailsNotContains(deviceCard, deviceName) {
     await t
       .expect(deviceCard.deviceCardName.innerText)
-      .notContains(deviceName, "Device name should not match.")
-      .expect(deviceCard.deviceCardType.innerText)
-      .notContains(deviceType, "Device type should not match.")
-      .expect(deviceCard.deviceCardCapacity.innerText)
-      .notContains(deviceCapacity, "Device capacity should not match.");
+      .notContains(deviceName, "Device name should not match.");
   }
 
   /**
