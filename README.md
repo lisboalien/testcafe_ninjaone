@@ -46,7 +46,7 @@ To run all the tests only on chrome:
 npm run test:chrome
 ```
 
-To run all the tests in other browser you just need to replace `chrome` with any of the following values
+To run all the tests in other browsers you just need to replace `chrome` with any of the following values
 ```
 [
     chrome:headless, 
