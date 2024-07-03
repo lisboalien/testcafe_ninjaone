@@ -99,9 +99,8 @@ Here I am sorting the endpoint result first because we cannot garantee that the 
 
 Then I verify if the register was renamed with the API, because this validation is stronger validating by id.
 
-After that I sort the devices list by the same order I sorted the endpoint results to check if the first card was really renamed. 
+After sorting the devices list to match the order of the endpoint results, I verify if the first card was successfully renamed. This approach was chosen because it's possible for multiple devices to have the same name, making it impractical to verify the entire list for a single name change.
 
-I didn't choose to verify the entire list because it is possible to have more than one device with the same name.
 
 ### Test 04
 ```
@@ -109,11 +108,9 @@ I didn't choose to verify the entire list because it is possible to have more th
 · Reload the page and verify the element is no longer visible and it doesn’t exist in the DOM.
 ```
 
-The same way as rename, I sorted both the endpoint and the UI to be sure that they are showing the same order of registers to see if the last device was really deleted.
+Similar to the rename operation, I sorted both the endpoint results and the UI display to confirm they show the same order of records.
 
-As it is not impossible to have 2 devices with different names but same types and capacity, I am not checking the type and capacity to see if they are not the same as the deleted one.
+This is to verify if the last device was indeed deleted. Given the possibility of having two devices with different names but identical types and capacities, I avoided using type and capacity as criteria for confirming the deletion.
 
 ### General comments
-I put this `getTestCounter()` function at the beggining of the test name to make it better to see in reports, specially if we have dinamically generated tests. 
-
-The problem is that with testcafe extensions it makes it difficult to see the test names, so I left it like that for now until I see a better solution.
+I introduced the getTestCounter() function at the beginning of each test name to enhance report readability, especially for dynamically generated tests. However, this approach has a drawback when using TestCafe extensions, as it complicates the visibility of test names. I plan to maintain this method for the time being, pending a more effective solution.
