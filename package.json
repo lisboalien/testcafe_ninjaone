@@ -2,11 +2,18 @@
   "scripts": {
     "test": "testcafe all tests/*.js",
     "test:chrome": "testcafe chrome tests/",
+    "test:chrome:headless": "testcafe chrome:headless tests/",
     "test:firefox": "testcafe firefox tests/",
-    "test:safari": "testcafe safari tests/"
+    "test:firefox:headless": "testcafe firefox:headless tests/",
+    "test:safari": "testcafe safari tests/",
+    "test:report": "testcafe all tests/*.js --reporter html:./reports/reporter/report.html"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "testcafe": "^3.6.1"
+  },
+  "devDependencies": {
+    "globals": "^15.8.0",
+    "testcafe-reporter-html": "^1.4.6"
   }
 }
