@@ -49,13 +49,13 @@ test(`${getTestCounter()} - Checking Devices List`, async (t) => {
 });
 
 test(`${getTestCounter()} - Rename Device using API`, async (t) => {
-  // Get the first device from the list
-  const results = await apiRequests.getDevicesAPI();
+  // Get the first device from the list sorted by hdd_capacity
+  const results = await apiRequests.getDevicesAPI("hdd_capacity");
   const firstDevice = results[0];
 
   // Generate new device details
   const renamedDevice = generateDevice(
-    "Renamed Device",
+    "$Renamed Device$",
     firstDevice.type,
     firstDevice.hdd_capacity
   );
@@ -65,12 +65,16 @@ test(`${getTestCounter()} - Rename Device using API`, async (t) => {
 
   // Verify device update in the API
   const updatedDevice = await apiRequests.getDeviceAPI(firstDevice.id);
+
+  // Reload to reflect changes
+  await t.eval(() => location.reload());
+
   await t
     .expect(updatedDevice.system_name)
     .eql(renamedDevice.system_name, "Device name is not updated");
 
-  // Reload to reflect changes
-  await t.eval(() => location.reload());
+  // Sort by HDD CAPACITY to make sure the device is at the top
+  await mainPage.sortDevicesBy('capacity');
 
   // Verify device update
   await mainPage.verifyDeviceCard(
@@ -83,7 +87,7 @@ test(`${getTestCounter()} - Rename Device using API`, async (t) => {
 
 test(`${getTestCounter()} - Delete the last device using API`, async (t) => {
   // Get the list of devices
-  const results = await apiRequests.getDevicesAPI();
+  const results = await apiRequests.getDevicesAPI('system_name');
 
   // Get the last device from the list
   const lastDevice = results[results.length - 1];
@@ -104,6 +108,9 @@ test(`${getTestCounter()} - Delete the last device using API`, async (t) => {
 
   // Reload to reflect changes
   await t.eval(() => location.reload());
+
+  // Sort by SYSTEM NAME to make sure the device is not at the bottom
+  await mainPage.sortDevicesBy('name');
 
   // Verify that the last device is not displayed on the main page
   await mainPage.verifyDeviceCard(
