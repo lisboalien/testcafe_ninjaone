@@ -13,7 +13,7 @@ This project is made to test the applications on
 
 So first make sure both of them are ON and running before running any tests of this project!
 
-You also need to have Node.js installed into your machine, check out more in the page [Node.js](https://nodejs.org/en/download/package-manager)
+You also need to have Node.js installed on your machine, check out more on the page [Node.js](https://nodejs.org/en/download/package-manager)
 
 ### Setup
 1. Clone the project
@@ -41,7 +41,7 @@ To run all the tests into all the available browsers:
 npm run test
 ```
 
-To run all the tests only on chrome:
+To run all the tests only on Chrome:
 ```bash
 npm run test:chrome
 ```
@@ -56,7 +56,7 @@ To run all the tests in other browsers you just need to replace `chrome` with an
 ]
 ``` 
 
-To run all the tests generating an html report at the end:
+To run all the tests generating an HTML report at the end:
 ```bash
 npm run test:report
 ```
@@ -83,11 +83,11 @@ This is being tested by the test `Checking Devices List`.
 · Verify the new device is now visible. Check name, type and capacity are visible and correctly displayed to the user.
 ```
 
-This is being tested by the dinamic generated tests `Create a new device - '${type}'`.
+This is being tested by the dynamically generated tests `Create a new device - '${type}'`.
 
-I decided to test all the 3 types of devices because there is a difference into the behavior, maybe this could be a bug, when creating a device with the type **WINDOWS SERVER**, that appears with an underscore into the device card (**WINDOWS_SERVER**).
+I decided to test all 3 types of devices because there is a difference in the behavior, maybe this could be a bug when creating a device with the type **WINDOWS SERVER**, which appears with an underscore into the device card (**WINDOWS_SERVER**).
 
-So this way I am covering the known possibilities of errors into the device creation.
+So this way I am covering the known possibilities of errors in the device creation.
 
 ### Test 03
 ```
@@ -95,11 +95,11 @@ So this way I am covering the known possibilities of errors into the device crea
 · Reload the page and verify the modified device has the new name.
 ```
 
-Here I am sorting the endpoint result first because we cannot garantee that the json result has the same order as the one shown into the html.
+Here I am sorting the endpoint result first because we cannot guarantee that the JSON result has the same order as the one shown in the HTML.
 
-Then I verify if the register was renamed with the API, because this validation is stronger validating by id.
+Then I verify if the register was renamed with the API because this validation is stronger validating by ID.
 
-After sorting the devices list to match the order of the endpoint results, I verify if the first card was successfully renamed. This approach was chosen because it's possible for multiple devices to have the same name, making it impractical to verify the entire list for a single name change.
+After sorting the devices list to match the order of the endpoint results, I verified if the first card was successfully renamed. This approach was chosen because multiple devices can have the same name, making it impractical to verify the entire list for a single name change.
 
 
 ### Test 04
